@@ -1,3 +1,5 @@
+* text=auto
+
 # Asset files should be treated by git as binary
 *.png binary
 *.jpg binary
