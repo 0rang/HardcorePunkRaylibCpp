@@ -16,8 +16,10 @@ void Draw3DObjects() {
     //position
     DrawCube({ drawnState.playerX, 0.0f, drawnState.playerY }, 1.0f, 1.0f, 1.0f, BLUE);
     //look direction
-    DrawLine3D({ drawnState.playerX, 0.0f,drawnState.playerY }, { drawnState.playerX + 2 * cos(DEG2RAD *
-               drawnState.playerRot),.0f,drawnState.playerY - 2 * sin(DEG2RAD * drawnState.playerRot) }, BLACK);
+    DrawLine3D((Vector3) { drawnState.playerX, 0.0f, drawnState.playerY }, (Vector3) {
+        drawnState.playerX + 2 * cos(DEG2RAD *
+            drawnState.playerRot), .0f, drawnState.playerY - (float)2 * sin(DEG2RAD * drawnState.playerRot)
+    }, BLACK);
     DrawGrid(100, 1.0f);
     EndMode3D();
 }
