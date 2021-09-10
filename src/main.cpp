@@ -1,19 +1,19 @@
 #include "raylib.h"
+#include "graphics.h"
+#include "game_logic.h"
+#include "models.h"
 
-constexpr auto SCREEN_WIDTH  = 800;
+constexpr auto SCREEN_WIDTH = 800;
 constexpr auto SCREEN_HEIGHT = 450;
 
-int main()
-{
+int main() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
     SetTargetFPS(60);
 
     Texture2D texture = LoadTexture(ASSETS_PATH"test.png");
 
-    while (!WindowShouldClose())
-    {
+    while (!WindowShouldClose()) {
         BeginDrawing();
-
         ClearBackground(RAYWHITE);
 
         const int texture_x = SCREEN_WIDTH / 2 - texture.width / 2;
