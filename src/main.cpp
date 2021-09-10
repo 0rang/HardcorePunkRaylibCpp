@@ -3,30 +3,28 @@
 #include "game_logic.h"
 #include "models.h"
 
-constexpr auto SCREEN_WIDTH = 800;
-constexpr auto SCREEN_HEIGHT = 450;
+constexpr auto SCREEN_WIDTH = 1600;
+constexpr auto SCREEN_HEIGHT = 900;
 
 int main() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
     SetTargetFPS(60);
+    GraphicsInit();
 
     Texture2D texture = LoadTexture(ASSETS_PATH"test.png");
 
     while (!WindowShouldClose()) {
+        GameLogicUpdate();
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
-        const int texture_x = SCREEN_WIDTH / 2 - texture.width / 2;
-        const int texture_y = SCREEN_HEIGHT / 2 - texture.height / 2;
-        DrawTexture(texture, texture_x, texture_y, WHITE);
-
-        const char* text = "OMG! IT WORKS!";
-        const Vector2 text_size = MeasureTextEx(GetFontDefault(), text, 20, 1);
-        DrawText(text, SCREEN_WIDTH / 2 - text_size.x / 2, texture_y + texture.height + text_size.y + 10, 20, BLACK);
-
+        Draw3DObjects();
+        DrawText(TextFormat("X: %f", drawnState.playerX), 3, 0, 20, BLACK);
+        DrawText(TextFormat("Y: %f", drawnState.playerY), 3, 21, 20, BLACK);
+        DrawText(TextFormat("V: %f", velocity), 3, 42, 20, BLACK);
         EndDrawing();
     }
 
+    GraphicsCleanup();
     CloseWindow();
 
     return 0;
