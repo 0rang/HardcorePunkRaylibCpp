@@ -15,7 +15,6 @@ double slideDuration = 1.0;
 float post_slide_deceleration = 5.0f;
 int num_puddles = 1;
 bool in_a_puddle = false;
-bool slidable = false;
 
 float velocity = .0f; //in m/s
 void HandleInput() {
