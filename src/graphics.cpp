@@ -26,6 +26,7 @@ void Draw3DObjects() {
     //Draw Player
     //position
     DrawModelEx(playerModel, playerPos, { .0f,1.0f,.0f }, 90 + playerRot, { 1.0f,1.0f,1.0f }, WHITE);
+    DrawBoundingBox(playerCollider.bbox, GREEN);
     //Draw Collectables
     for (int i = 0;i < collectables.size(); i++) {
         if (collectables[i].hits({ playerPos.x,playerPos.z }))
@@ -37,12 +38,13 @@ void Draw3DObjects() {
     }
     DrawCircle3D({ puddles[0].posX, 0.0, puddles[0].posY }, puddles[0].size, { 1,0,0 }, 90.0, ORANGE);
     playerCollider.pos = { playerPos.x,playerPos.z };
+    playerCollider.rot = playerRot + 90;
     //Draw Obstacles
     for (int i = 0;i < obstacles.size();i++) {
         if (CheckColliders(playerCollider, obstacles[i]))
-            DrawModel(smallWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, 1.0f, RED);
+            DrawModelEx(smallWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, RED);
         else
-            DrawModel(smallWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, 1.0f, WHITE);
+            DrawModelEx(smallWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, WHITE);
     }
 
     DrawGrid(200, 1.0f);

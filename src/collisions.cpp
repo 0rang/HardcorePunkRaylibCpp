@@ -14,50 +14,95 @@ void ObstaclesInit() {
     obstacles.push_back(o);
 }
 ObjectCollider::ObjectCollider(const Model& model) {
-    BoundingBox bbox = MeshBoundingBox(model.meshes[0]);
-    count = 4;
-    verts = (Vector2*)malloc(count * sizeof(Vector2));
-    verts[0] = { bbox.max.x,bbox.max.z };
-    verts[1] = { bbox.max.x,bbox.min.z };
-    verts[2] = { bbox.min.x,bbox.min.z };
-    verts[3] = { bbox.min.x,bbox.max.z };
+    bbox = MeshBoundingBox(model.meshes[0]);
 }
-bool LinesInterSect(Vector2& a1, Vector2 a2, Vector2 b1, Vector2 b2) {
-    bool aVert = false, bVert = false;
-    float v1, v2, u1, u2;
-    if (a1.x == a2.x)
-        aVert = true;
-    else {
-        u1 = (a1.y - a2.y) / (a1.x - a2.x);
-        v1 = a1.y - u1 * a1.x;
-    }
-    if (b1.x == b2.x)
-        bVert = true;
-    else {
-        u1 = (b1.y - b2.y) / (b1.x - b2.x);
-        v1 = b1.y - u1 * b1.x;
-    }
-
+float ProjectAxis(Vector2 axis, Vector2 point) {
+    float x = ((point.x * axis.x + point.y * axis.y) * axis.x / (axis.x * axis.x + axis.y * axis.y));
+    float y = ((point.x * axis.x + point.y * axis.y) * axis.y / (axis.x * axis.x + axis.y * axis.y));
+    return Vector2DotProduct({ x,y }, axis);
 }
 bool CheckColliders(const ObjectCollider& o1, const ObjectCollider& o2) {
-    int intersections = 0;
-    for (int i = 0;i < o1.count;i++) {
-        for (int j = 0;j < o2.count;j++) {
-            Vector2 p1 = { o2.pos.x + o2.verts[j].x * cos(o2.rot),o2.pos.y - o2.verts[j].y * sin(o2.rot) },
-                p2 = { o2.pos.x + o2.verts[(j + 1) % o2.count].x * cos(o2.rot),
-                o2.pos.y - o2.verts[(j + 1) % o2.count].y * sin(o2.rot) };
-            if (p1.x == p2.x && (o1.verts[i].y >= p1.y && o1.verts[i].y <= p2.y) || (o1.verts[i].y < p1.y && o1.verts[i].y >= p2.y)) {
-                intersections++;
-                continue;
-            }
-            float a = (p1.y - p2.y) / (p1.x - p2.x);
-            float b = p1.y - a * p1.x;
-            float x3 = (o1.verts[i].y - b) / a;
-            if ((x3 >= p1.x && x3 <= p2.x) || (x3 < p1.x && x3 >= p2.x))
-                intersections++;
-        }
-        if (intersections % 2)
-            return true;
+    //tranform o2 to o1 local space
+    Vector2 newpos = Vector2Subtract(o2.pos, o1.pos);
+    float newrot = DEG2RAD * (o2.rot - o1.rot);
+    Vector2 corners[4];
+    corners[0] = { static_cast<float>((o2.bbox.max.x + newpos.x) * cos(newrot) + (o2.bbox.max.z + newpos.y) * sin(newrot)) ,
+    static_cast<float>((o2.bbox.max.x + newpos.x) * sin(newrot) - (o2.bbox.max.z + newpos.y) * cos(newrot)) };
+    corners[1] = { static_cast<float>((o2.bbox.max.x + newpos.x) * cos(newrot) + (o2.bbox.min.z + newpos.y) * sin(newrot)) ,
+    static_cast<float>((o2.bbox.max.x + newpos.x) * sin(newrot) - (o2.bbox.min.z + newpos.y) * cos(newrot)) };
+    corners[2] = { static_cast<float>((o2.bbox.min.x + newpos.x) * cos(newrot) + (o2.bbox.min.z + newpos.y) * sin(newrot)) ,
+    static_cast<float>((o2.bbox.min.x + newpos.x) * sin(newrot) - (o2.bbox.min.z + newpos.y) * cos(newrot)) };
+    corners[3] = { static_cast<float>((o2.bbox.min.x + newpos.x) * cos(newrot) + (o2.bbox.max.z + newpos.y) * sin(newrot)) ,
+    static_cast<float>((o2.bbox.min.x + newpos.x) * sin(newrot) - (o2.bbox.max.z + newpos.y) * cos(newrot)) };
+    float maxX, minX, maxY, minY;
+    // project o2 to unit x
+    maxX = corners[0].x;
+    minX = corners[0].x;
+    for (int i = 1;i < 4;i++) {
+        if (corners[i].x > maxX)
+            maxX = corners[i].x;
+        if (corners[i].x < minX)
+            minX = corners[i].x;
     }
-    return false;
+    if (o1.bbox.min.x > maxX || minX > o1.bbox.max.x)
+        return false;
+    //project o2 to unit y
+    maxY = corners[0].y;
+    minY = corners[0].y;
+    for (int i = 1;i < 4;i++) {
+        if (corners[i].y > maxY)
+            maxY = corners[i].y;
+        if (corners[i].y < minY)
+            minY = corners[i].y;
+    }
+    if (o1.bbox.min.z > maxY || minY > o1.bbox.max.z)
+        return false;
+
+    //project o1 to first axis of o2
+    Vector2 axis = Vector2Subtract(corners[0], corners[1]);
+    maxX = ProjectAxis(axis, { o1.bbox.max.x,o1.bbox.max.z });
+    minX = maxX;
+    float res = ProjectAxis(axis, { o1.bbox.max.x,o1.bbox.min.z });
+    maxX = res > maxX ? res : maxX;
+    minX = res < minX ? res : minX;
+    res = ProjectAxis(axis, { o1.bbox.min.x,o1.bbox.min.z });
+    maxX = res > maxX ? res : maxX;
+    minX = res < minX ? res : minX;
+    res = ProjectAxis(axis, { o1.bbox.min.x,o1.bbox.max.z });
+    maxX = res > maxX ? res : maxX;
+    minX = res < minX ? res : minX;
+    minY = ProjectAxis(axis, corners[0]);
+    maxY = minY;
+    for (int i = 1;i < 4;i++) {
+        res = ProjectAxis(axis, corners[i]);
+        maxY = res > maxY ? res : maxY;
+        minY = res < minY ? res : minY;
+    }
+    if (minX > maxY || minY > maxX)
+        return false;
+
+    //project o1 to second axis of o2
+    axis = Vector2Subtract(corners[1], corners[2]);
+    maxX = ProjectAxis(axis, { o1.bbox.max.x,o1.bbox.max.z });
+    minX = maxX;
+    res = ProjectAxis(axis, { o1.bbox.max.x,o1.bbox.min.z });
+    maxX = res > maxX ? res : maxX;
+    minX = res < minX ? res : minX;
+    res = ProjectAxis(axis, { o1.bbox.min.x,o1.bbox.min.z });
+    maxX = res > maxX ? res : maxX;
+    minX = res < minX ? res : minX;
+    res = ProjectAxis(axis, { o1.bbox.min.x,o1.bbox.max.z });
+    maxX = res > maxX ? res : maxX;
+    minX = res < minX ? res : minX;
+    minY = ProjectAxis(axis, corners[0]);
+    maxY = minY;
+    for (int i = 1;i < 4;i++) {
+        res = ProjectAxis(axis, corners[i]);
+        maxY = res > maxY ? res : maxY;
+        minY = res < minY ? res : minY;
+    }
+    if (minX > maxY || minY > maxX)
+        return false;
+
+    return true;
 }
