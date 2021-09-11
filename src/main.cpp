@@ -10,6 +10,7 @@ int main() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
     SetTargetFPS(60);
     GraphicsInit();
+    GameLogicInit();
 
     Texture2D texture = LoadTexture(ASSETS_PATH"test.png");
 

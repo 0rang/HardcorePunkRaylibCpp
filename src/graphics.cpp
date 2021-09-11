@@ -33,6 +33,8 @@ void Draw3DObjects() {
             drawnState.playerRot)), .0f, drawnState.playerY - static_cast <float>(2 * sin(DEG2RAD * drawnState.playerRot))
         }, BLACK);
     */
+    DrawCircle3D({puddles[0].posX, 0.0, puddles[0].posY}, puddles[0].size, {1,0,0}, 90.0, ORANGE  );
+
     DrawGrid(100, 1.0f);
     EndMode3D();
 }
