@@ -20,8 +20,8 @@ bool inAPuddle = false;
 
 #pragma region Jump Params
 constexpr float maxJumpHeight = 2.0f;
-constexpr float initialJumpVelocity = 15.0f;
-constexpr float gravity = 14.0f; //should be positive
+constexpr float initialJumpVelocity = 10.0f;
+constexpr float gravity = 9.0f; //should be positive
 bool jumping = false;
 float jumpVelocity = 0.0f;
 #pragma endregion
