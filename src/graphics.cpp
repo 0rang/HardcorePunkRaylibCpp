@@ -24,15 +24,18 @@ void Draw3DObjects() {
 
     //Draw Player
     //position
-    //hardcoded scale
     DrawModelEx(playerModel, { drawnState.playerX,0.0f,drawnState.playerY }, { .0f,1.0f,.0f }, 90 + drawnState.playerRot, { 1.0f,1.0f,1.0f }, WHITE);
-    //look direction
-    /*
-    DrawLine3D({ drawnState.playerX, 0.0f, drawnState.playerY }, {
-        drawnState.playerX + static_cast <float>(2 * cos(DEG2RAD *
-            drawnState.playerRot)), .0f, drawnState.playerY - static_cast <float>(2 * sin(DEG2RAD * drawnState.playerRot))
-        }, BLACK);
-    */
+
+    //Draw Collectables
+    for (int i = 0;i < collectables.size(); i++) {
+        if (collectables[i].hits({ drawnState.playerX,drawnState.playerY }))
+            DrawCylinder({ collectables[i].location.x,.0f,collectables[i].location.y },
+                .2f, .2f, .5f, 16, GREEN);
+        else
+            DrawCylinder({ collectables[i].location.x,.0f,collectables[i].location.y },
+                .2f, .2f, .5f, 16, RED);
+    }
+
     DrawGrid(100, 1.0f);
     EndMode3D();
 }
