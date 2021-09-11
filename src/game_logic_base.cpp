@@ -21,15 +21,15 @@ bool inAPuddle = false;
 #pragma region Jump Params
 constexpr float initialJumpVelocity = 10.0f;
 constexpr float gravity = 9.0f; //should be positive
-bool jumping = false;
+bool grounded = true;
 float jumpVelocity = 0.0f;
 #pragma endregion
 
 float velocity = .0f; //in m/s
 void HandleInput() {
-    if (IsKeyDown(KEY_W))
+    if (IsKeyDown(KEY_W) && grounded)
         velocity += acceleration;
-    if (IsKeyDown(KEY_S))
+    if (IsKeyDown(KEY_S) && grounded)
         velocity -= 2 * acceleration;
     if (IsKeyDown(KEY_A))
         playerRot += turnSpeed;
@@ -63,7 +63,7 @@ void GameLogicUpdate() {
     }
 
     // make player slide if we have just entered a puddle and player is grounded
-    if (inAPuddle && !in_a_puddle_prev_frame && playerPos.y <= 0.0f) {
+    if (inAPuddle && !in_a_puddle_prev_frame && grounded) {
         maxSpeed *= 2.0f;
         velocity *= 2.0f;
         slideTime = GetTime();
@@ -76,12 +76,13 @@ void GameLogicUpdate() {
 #pragma endregion
     
 #pragma region Jump
-    if(IsKeyPressed(KEY_SPACE) && playerPos.y <= 0.0f){
+    if(IsKeyPressed(KEY_SPACE) && grounded){
         jumpVelocity = initialJumpVelocity;
     }
     playerPos.y += jumpVelocity * timeDelta;
     jumpVelocity -= gravity * timeDelta;
     playerPos.y = playerPos.y > 0.0f ? playerPos.y : 0.0f; // don't fall through the ground
+    grounded = playerPos.y <= 0.0f;
 #pragma endregion
 
     // clamp velocity
