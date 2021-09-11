@@ -31,7 +31,7 @@ void GameLogicInit() {
     // init puddles
     puddles = static_cast<PuddleState*>(malloc(num_puddles * sizeof(PuddleState)));
 
-    PuddleState puddle0 = { 0.0f, 30.0f, 5.0f };
+    PuddleState puddle0 = { 0.0f, -30.0f, 2.0f };
     puddles[0] = puddle0;
 }
 void GameLogicUpdate() {
@@ -57,7 +57,7 @@ void GameLogicUpdate() {
         slide_time = GetTime();
     }
     if (GetTime() - slide_time > slideDuration) {
-        maxSpeed = normalMaxSpeed - post_slide_deceleration * timeDelta; // decelerate
+        maxSpeed = maxSpeed - post_slide_deceleration * timeDelta; // decelerate
         maxSpeed = maxSpeed > normalMaxSpeed ? maxSpeed : normalMaxSpeed; // clamp decelaration
     }
 #pragma endregion
