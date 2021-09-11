@@ -2,12 +2,17 @@
 #include "game_logic.h"
 #include "raylib.h"
 #include "raymath.h"
-Camera mainCamera = { { 0.0f, 10.0f, 10.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, CAMERA_PERSPECTIVE };
+Camera mainCamera = { { 0.0f, 8.0f, 10.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, CAMERA_PERSPECTIVE };
 void GraphicsInit() {}
 void Draw3DObjects() {
     //Camera follows player
+#ifdef PLAYER_CAMERA_FIXED
     mainCamera.position.x = drawnState.playerX;
     mainCamera.position.z = 10 + drawnState.playerY;
+#else
+    mainCamera.position.x = -10 * cos(DEG2RAD * drawnState.playerRot) + drawnState.playerX;
+    mainCamera.position.z = 10 * sin(DEG2RAD * drawnState.playerRot) + drawnState.playerY;
+#endif
     mainCamera.target.x = drawnState.playerX;
     mainCamera.target.z = drawnState.playerY;
     BeginMode3D(mainCamera);
