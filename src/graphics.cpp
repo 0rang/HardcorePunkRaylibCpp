@@ -29,9 +29,9 @@ void Draw3DObjects() {
     //Draw Collectables
     for (int i = 0;i < collectables.size(); i++) {
         if (collectables[i].hits({ playerPos.x,playerPos.z }))
-            DrawModel(beerModel, { collectables[i].location.x,.0f,collectables[i].location.y }, 1.0f, GREEN);
+            DrawModel(beerModel, { collectables[i].location.x,.1f,collectables[i].location.y }, 1.0f, GREEN);
         else
-            DrawModel(beerModel, { collectables[i].location.x,.0f,collectables[i].location.y }, 1.0f, WHITE);
+            DrawModel(beerModel, { collectables[i].location.x,.1f,collectables[i].location.y }, 1.0f, WHITE);
     }
     DrawCircle3D({ puddles[0].posX, 0.0, puddles[0].posY }, puddles[0].size, { 1,0,0 }, 90.0, ORANGE);
     playerCollider.pos = { playerPos.x,playerPos.z };
@@ -43,7 +43,7 @@ void Draw3DObjects() {
         else
             DrawModelEx(smallWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, WHITE);
     }
-
+    DrawModel(floorModel, { .0f,-.1f,.0f }, 1.0f, DARKGRAY);
     DrawGrid(200, 1.0f);
     EndMode3D();
 }
