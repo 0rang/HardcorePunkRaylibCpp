@@ -11,6 +11,8 @@ int main() {
     SetTargetFPS(60);
     GraphicsInit();
     CollectablesInit();
+    GameLogicInit();
+
     Texture2D texture = LoadTexture(ASSETS_PATH"test.png");
 
     while (!WindowShouldClose()) {

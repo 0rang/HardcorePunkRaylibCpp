@@ -17,7 +17,19 @@ struct Collectable {
 };
 void CollectablesInit();
 extern std::vector<Collectable> collectables;
+
+struct PuddleState {
+    float posX = .0f;
+    float posY = .0f;
+    float size = .5f;
+
+    bool player_in_puddle = false;
+};
+
+extern PuddleState* puddles;
 extern DrawnState drawnState;
 extern float velocity;
+void GameLogicInit();
 void GameLogicUpdate();
+void GameLogicCleanup();
 #endif

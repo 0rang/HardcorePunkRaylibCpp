@@ -35,6 +35,14 @@ void Draw3DObjects() {
             DrawCylinder({ collectables[i].location.x,.0f,collectables[i].location.y },
                 .2f, .2f, .5f, 16, RED);
     }
+    //look direction
+    /*
+    DrawLine3D({ drawnState.playerX, 0.0f, drawnState.playerY }, {
+        drawnState.playerX + static_cast <float>(2 * cos(DEG2RAD *
+            drawnState.playerRot)), .0f, drawnState.playerY - static_cast <float>(2 * sin(DEG2RAD * drawnState.playerRot))
+        }, BLACK);
+    */
+    DrawCircle3D({ puddles[0].posX, 0.0, puddles[0].posY }, puddles[0].size, { 1,0,0 }, 90.0, ORANGE);
 
     DrawGrid(100, 1.0f);
     EndMode3D();
