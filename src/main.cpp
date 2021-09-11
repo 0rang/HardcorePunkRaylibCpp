@@ -30,6 +30,7 @@ int main() {
     }
 
     GraphicsCleanup();
+    GameLogicCleanup();
     CloseWindow();
 
     return 0;
