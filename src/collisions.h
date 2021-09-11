@@ -4,7 +4,7 @@
 #include <vector>
 struct ObjectCollider {
     Vector2* verts = NULL;
-    Vector2 pos;
+    Vector2 pos = { 0.0f,0.0f };
     unsigned int count = 0;
     float rot = 0.0f;
     ObjectCollider() {};

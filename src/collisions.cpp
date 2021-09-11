@@ -22,6 +22,23 @@ ObjectCollider::ObjectCollider(const Model& model) {
     verts[2] = { bbox.min.x,bbox.min.z };
     verts[3] = { bbox.min.x,bbox.max.z };
 }
+bool LinesInterSect(Vector2& a1, Vector2 a2, Vector2 b1, Vector2 b2) {
+    bool aVert = false, bVert = false;
+    float v1, v2, u1, u2;
+    if (a1.x == a2.x)
+        aVert = true;
+    else {
+        u1 = (a1.y - a2.y) / (a1.x - a2.x);
+        v1 = a1.y - u1 * a1.x;
+    }
+    if (b1.x == b2.x)
+        bVert = true;
+    else {
+        u1 = (b1.y - b2.y) / (b1.x - b2.x);
+        v1 = b1.y - u1 * b1.x;
+    }
+
+}
 bool CheckColliders(const ObjectCollider& o1, const ObjectCollider& o2) {
     int intersections = 0;
     for (int i = 0;i < o1.count;i++) {
