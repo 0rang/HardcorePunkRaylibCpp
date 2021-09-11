@@ -17,8 +17,6 @@ struct PuddleState {
     float posX = .0f;
     float posY = .0f;
     float size = .5f;
-
-    bool player_in_puddle = false;
 };
 extern Vector3 playerPos;
 extern float playerRot;
