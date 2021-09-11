@@ -2,12 +2,12 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <stdlib.h>
-DrawnState drawnState;
 constexpr float acceleration = .1f;
 constexpr float turnSpeed = 1.0f;//in deg/s 
 constexpr float normalMaxSpeed = 10.0f;
 float maxSpeed = normalMaxSpeed;
-
+Vector3 playerPos = { .0f,.0f,.0f };
+float playerRot = 90.0f;
 // puddle params
 PuddleState* puddles;
 double slide_time = -10.0;
@@ -23,9 +23,9 @@ void HandleInput() {
     if (IsKeyDown(KEY_S))
         velocity -= 2 * acceleration;
     if (IsKeyDown(KEY_A))
-        drawnState.playerRot += turnSpeed;
+        playerRot += turnSpeed;
     if (IsKeyDown(KEY_D))
-        drawnState.playerRot -= turnSpeed;
+        playerRot -= turnSpeed;
 }
 void GameLogicInit() {
     // init puddles
@@ -42,9 +42,9 @@ void GameLogicUpdate() {
     bool in_a_puddle_prev_frame = in_a_puddle;
     in_a_puddle = false;
     for (int i = 0; i < num_puddles; i++) {
-        Vector2 playerPos = { drawnState.playerX, drawnState.playerY };
+        Vector2 playerPos2d = { playerPos.x, playerPos.z };
         Vector2 puddlePos = { puddles[i].posX, puddles[i].posY };
-        bool in_this_puddle = Vector2Length(Vector2Subtract(playerPos, puddlePos)) < puddles[i].size;
+        bool in_this_puddle = Vector2Length(Vector2Subtract(playerPos2d, puddlePos)) < puddles[i].size;
         if (in_this_puddle) {
             in_a_puddle = true;
         }
@@ -65,9 +65,9 @@ void GameLogicUpdate() {
     velocity = (velocity < maxSpeed) * velocity + (velocity >= maxSpeed) * maxSpeed;
     velocity = (velocity > 0.0f) * velocity;
 
-    drawnState.playerX += cos(drawnState.playerRot * DEG2RAD) * velocity * timeDelta;
+    playerPos.x += cos(playerRot * DEG2RAD) * velocity * timeDelta;
     // subtract due to GL coord system (Z towards for our camera)
-    drawnState.playerY -= sin(drawnState.playerRot * DEG2RAD) * velocity * timeDelta;
+    playerPos.z -= sin(playerRot * DEG2RAD) * velocity * timeDelta;
 
 
 }

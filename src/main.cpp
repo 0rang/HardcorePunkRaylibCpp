@@ -22,8 +22,8 @@ int main() {
         Draw3DObjects();
 
         //Debug Text
-        DrawText(TextFormat("X: %f", drawnState.playerX), 3, 0, 20, BLACK);
-        DrawText(TextFormat("Y: %f", drawnState.playerY), 3, 21, 20, BLACK);
+        DrawText(TextFormat("X: %f", playerPos.x), 3, 0, 20, BLACK);
+        DrawText(TextFormat("Y: %f", playerPos.z), 3, 21, 20, BLACK);
         DrawText(TextFormat("V: %f", velocity), 3, 42, 20, BLACK);
 
         EndDrawing();
