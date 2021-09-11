@@ -25,9 +25,10 @@ int main() {
 
         //Debug Text
         DrawText(TextFormat("X: %f", playerPos.x), 3, 0, 20, BLACK);
-        DrawText(TextFormat("Y: %f", playerPos.z), 3, 21, 20, BLACK);
-        DrawText(TextFormat("V: %f", velocity), 3, 42, 20, BLACK);
-        DrawText(TextFormat("R: %f", playerRot), 3, 63, 20, BLACK);
+        DrawText(TextFormat("Y: %f", playerPos.y), 3, 21, 20, BLACK);
+        DrawText(TextFormat("Z: %f", playerPos.z), 3, 42, 20, BLACK);
+        DrawText(TextFormat("V: %f", velocity), 3, 63, 20, BLACK);
+
         EndDrawing();
     }
 
