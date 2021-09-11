@@ -4,6 +4,7 @@
 //Model Objects
 extern Model playerModel;
 extern Model smallWallModel;
+extern Model beerModel;
 //Init Models
 void ModelsInit();
 //Cleanup Models

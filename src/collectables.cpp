@@ -17,5 +17,5 @@ void CollectablesInit() {
 bool Collectable::hits(const Vector2& playerPos) {
     //Check distance via Pythagorean theorem
     return((playerPos.x - location.x) * (playerPos.x - location.x) +
-        (playerPos.y - location.y) * (playerPos.y - location.y) <= 1.0f);
+        (playerPos.y - location.y) * (playerPos.y - location.y) <= .5f);
 }

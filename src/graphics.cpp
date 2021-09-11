@@ -26,15 +26,12 @@ void Draw3DObjects() {
     //Draw Player
     //position
     DrawModelEx(playerModel, playerPos, { .0f,1.0f,.0f }, 90 + playerRot, { 1.0f,1.0f,1.0f }, WHITE);
-    DrawBoundingBox(playerCollider.bbox, GREEN);
     //Draw Collectables
     for (int i = 0;i < collectables.size(); i++) {
         if (collectables[i].hits({ playerPos.x,playerPos.z }))
-            DrawCylinder({ collectables[i].location.x,.0f,collectables[i].location.y },
-                .2f, .2f, .5f, 16, GREEN);
+            DrawModel(beerModel, { collectables[i].location.x,.0f,collectables[i].location.y }, 1.0f, GREEN);
         else
-            DrawCylinder({ collectables[i].location.x,.0f,collectables[i].location.y },
-                .2f, .2f, .5f, 16, RED);
+            DrawModel(beerModel, { collectables[i].location.x,.0f,collectables[i].location.y }, 1.0f, WHITE);
     }
     DrawCircle3D({ puddles[0].posX, 0.0, puddles[0].posY }, puddles[0].size, { 1,0,0 }, 90.0, ORANGE);
     playerCollider.pos = { playerPos.x,playerPos.z };
