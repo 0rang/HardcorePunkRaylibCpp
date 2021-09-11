@@ -10,6 +10,8 @@ ObjectCollider playerCollider;
 void ObstaclesInit() {
     ObjectCollider o(smallWallModel);
     playerCollider = ObjectCollider(playerModel);
+    playerCollider.bbox.min.x *= 0.19992423057556152f;
+    playerCollider.bbox.max.x *= 0.19992423057556152f;
     o.pos.y = 10.0f;
     obstacles.push_back(o);
 }
