@@ -2,6 +2,7 @@
 #include "graphics.h"
 #include "game_logic.h"
 #include "models.h"
+#include "collisions.h"
 
 constexpr auto SCREEN_WIDTH = 1600;
 constexpr auto SCREEN_HEIGHT = 900;
@@ -12,6 +13,7 @@ int main() {
     GraphicsInit();
     CollectablesInit();
     GameLogicInit();
+    ObstaclesInit();
 
     Texture2D texture = LoadTexture(ASSETS_PATH"test.png");
 

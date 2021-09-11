@@ -3,6 +3,7 @@
 #include "raylib.h"
 //Model Objects
 extern Model playerModel;
+extern Model smallWallModel;
 //Init Models
 void ModelsInit();
 //Cleanup Models
