@@ -37,7 +37,7 @@ bool LinesInterSect(Vector2& a1, Vector2 a2, Vector2 b1, Vector2 b2) {
         u1 = (b1.y - b2.y) / (b1.x - b2.x);
         v1 = b1.y - u1 * b1.x;
     }
-
+    return false;
 }
 bool CheckColliders(const ObjectCollider& o1, const ObjectCollider& o2) {
     int intersections = 0;

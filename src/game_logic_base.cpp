@@ -19,7 +19,6 @@ bool inAPuddle = false;
 #pragma endregion
 
 #pragma region Jump Params
-constexpr float maxJumpHeight = 2.0f;
 constexpr float initialJumpVelocity = 10.0f;
 constexpr float gravity = 9.0f; //should be positive
 bool jumping = false;
@@ -63,8 +62,8 @@ void GameLogicUpdate() {
         }
     }
 
-    // make player slide if we have just entered a puddle
-    if (inAPuddle && !in_a_puddle_prev_frame) {
+    // make player slide if we have just entered a puddle and player is grounded
+    if (inAPuddle && !in_a_puddle_prev_frame && playerPos.y <= 0.0f) {
         maxSpeed *= 2.0f;
         velocity *= 2.0f;
         slideTime = GetTime();
