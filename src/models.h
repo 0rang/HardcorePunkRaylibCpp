@@ -7,6 +7,7 @@ extern Model playerModel;
 extern Model smallWallModel;
 extern Model bigWallModel;
 extern Model beerModel;
+extern Model bspModel;
 //Init Models
 void ModelsInit();
 //Cleanup Models

@@ -33,6 +33,8 @@ void ObstaclesInit() {
         obstacles.push_back(o2);
         o2.pos.x += 1.0f;
     }
+
+
 }
 ObjectCollider::ObjectCollider(const Model& model) {
     bbox = MeshBoundingBox(model.meshes[0]);
