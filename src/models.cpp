@@ -9,7 +9,7 @@ Model beerModel;
 Shader lshader;
 void ModelsInit() {
     floorModel = LoadModel(ASSETS_PATH"PlaneText.gltf");
-    playerModel = LoadModel(ASSETS_PATH"Board.gltf");
+    playerModel = LoadModel(ASSETS_PATH"BoardText.gltf");
     playerModel.transform = MatrixMultiply(MatrixScale(0.19992423057556152f, 0.030000029131770134f, 1.0f), playerModel.transform);
     beerModel = LoadModel(ASSETS_PATH"BeerBottleText.gltf");
     smallWallModel = LoadModel(ASSETS_PATH"SmallWallText.gltf");

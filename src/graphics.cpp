@@ -5,7 +5,7 @@
 #include "raymath.h"
 #include "collisions.h"
 static constexpr float camera_back = 5.0f;
-static constexpr float camera_height = 4.0f;
+static constexpr float camera_height = 2.0f;
 Camera mainCamera = { { 0.0f, camera_height, camera_back }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, CAMERA_PERSPECTIVE };
 void GraphicsInit() {
     ModelsInit();
@@ -29,10 +29,7 @@ void Draw3DObjects() {
     //Draw Collectables
     for (int i = 0;i < collectables.size(); i++) {
         if (collectables[i].active) {
-            if (collectables[i].hits({ playerPos.x,playerPos.z }))
-                DrawModel(beerModel, { collectables[i].location.x,.1f,collectables[i].location.y }, 1.0f, GREEN);
-            else
-                DrawModel(beerModel, { collectables[i].location.x,.1f,collectables[i].location.y }, 1.0f, WHITE);
+            DrawModel(beerModel, { collectables[i].location.x,.2f,collectables[i].location.y }, 3.0f, WHITE);
         }
     }
     DrawCircle3D({ puddles[0].posX, 0.0, puddles[0].posY }, puddles[0].size, { 1,0,0 }, 90.0, ORANGE);
