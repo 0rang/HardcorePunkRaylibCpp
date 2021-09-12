@@ -17,6 +17,7 @@ struct PuddleState {
     float size = 2.0f;
 };
 extern PuddleState* puddles;
+extern const int numPuddles;
 
 enum DrunkTier {
     SOBER,

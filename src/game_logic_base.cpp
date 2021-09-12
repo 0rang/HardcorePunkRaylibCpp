@@ -18,7 +18,7 @@ bool gameLogicLocked = false;
 #pragma region Puddle Params
 constexpr double slideDuration = 1.0;
 constexpr float postSlideDeceleration = 5.0f;
-constexpr int numPuddles = 1;
+const int numPuddles = 1;
 PuddleState* puddles;
 double slideTime = -10.0;
 bool inAPuddle = false;

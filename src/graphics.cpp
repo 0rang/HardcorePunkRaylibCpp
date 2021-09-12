@@ -32,7 +32,11 @@ void Draw3DObjects() {
             DrawModel(beerModel, { collectables[i].location.x,.2f,collectables[i].location.y }, 3.0f, WHITE);
         }
     }
-    DrawCircle3D({ puddles[0].posX, 0.0, puddles[0].posY }, puddles[0].size, { 1,0,0 }, 90.0, ORANGE);
+    for (int i = 0; i < numPuddles; i++){
+        PuddleState puddle = puddles[i];
+        DrawCircle3D({ puddle.posX, 0.0, puddle.posY }, puddle.size, { 1,0,0 }, 90.0, ORANGE);
+    }
+    
 
     //Draw Obstacles
     for (int i = 0;i < obstacles.size();i++) {
