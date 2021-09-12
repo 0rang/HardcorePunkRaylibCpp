@@ -49,7 +49,7 @@ float swayDir; // direction of tumble (1.0 or -1.0)
 #pragma region Corrupt Corp Params
 float corpPosX = 5;
 float corpPosZ = -5;
-float corpTriggerDist;
+float corpTriggerDist = 50;
 #pragma endregion
 
 
@@ -192,10 +192,10 @@ void GameLogicUpdate() {
     {
         Vector2 corpPos = { corpPosX, corpPosZ };
 
-        // if (Vector2Length(Vector2Subtract(corpPos,{playerPos.x, playerPos.z} )) < corpTriggerDist)
-        // {
-            
-        // }
+        if (Vector2Length(Vector2Subtract(corpPos,{playerPos.x, playerPos.z} )) < corpTriggerDist && drunkTier == NAUSEOUS)
+        {
+            LockGameLogic();
+        }
 
     }
 #pragma endregion
