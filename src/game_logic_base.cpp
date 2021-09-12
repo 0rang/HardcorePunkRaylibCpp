@@ -23,7 +23,7 @@ bool inAPuddle = false;
 #pragma endregion
 
 #pragma region Jump Params
-constexpr float initialJumpVelocity = 10.0f;
+constexpr float initialJumpVelocity = 8.0f;
 constexpr float gravity = 9.0f; //should be positive
 bool grounded = true;
 float jumpVelocity = 0.0f;
@@ -59,6 +59,7 @@ void GameLogicInit() {
     puddles[0] = puddle0;
 }
 
+// TODO: actually pause the game here and tell the player what happened
 void ResetGameState (){
     drunkTier = SOBER;
     playerPos = {0.0f, 0.0f, 0.0f};

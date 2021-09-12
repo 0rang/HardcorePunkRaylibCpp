@@ -30,9 +30,14 @@ int main() {
         DrawText(TextFormat("V: %f", velocity), 3, 63, 20, WHITE);
         DrawText(TextFormat("SIDEWAYS V: %f", sidewaysVelocity), 3, 84, 20, GRAY);
         DrawText(TextFormat("TIME TILL TUMBLE: %f", (lastTumbleTime + tumbleInterval) - GetTime() ), 3, 105, 20, GRAY);
-        DrawText(TextFormat("DRUNK TIER : %i", drunkTier), 3, 126, 20, GREEN);
-        //+ (drunkTier == SOBER) ? "SOBER" : (drunkTier == TIPSY) ? "TIPSY" : "NAUSEOUS", 3, 84, 20, GREEN);
 
+        // UI TEXT
+        DrawText(TextFormat("DRUNKNESS : %s", ((drunkTier == SOBER) ? "SOBER" : ((drunkTier == TIPSY) ? "TIPSY" : "NAUSEOUS"))),
+                            3, 126, 20,
+                            (drunkTier == SOBER) ? GREEN : (drunkTier == TIPSY) ? YELLOW : RED); // todo: change colour green/amber/red based on drunkness
+        
+
+        
         EndDrawing();
     }
 
