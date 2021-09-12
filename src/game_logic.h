@@ -34,6 +34,8 @@ extern double nauseousCountdown;
 
 extern bool gameLogicLocked;
 
+extern bool gameWin;
+
 extern Vector3 playerPos;
 extern float playerRot;
 
