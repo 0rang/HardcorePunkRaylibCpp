@@ -48,7 +48,7 @@ float swayDir; // direction of tumble (1.0 or -1.0)
 
 #pragma region Corrupt Corp Params
 float corpPosX = 5;
-float corpPosY = -5;
+float corpPosZ = -5;
 float corpTriggerDist;
 #pragma endregion
 
@@ -139,7 +139,7 @@ void GameLogicUpdate() {
             collectables[i].active = false;
             drunkTier = static_cast<DrunkTier>(drunkTier + 1);
             lastTumbleTime = GetTime();
-            if (drunkTier == BLACKOUT)             {
+            if (drunkTier == BLACKOUT) {
                 LockGameLogic();
             }
 
@@ -189,11 +189,19 @@ void GameLogicUpdate() {
 #pragma endregion
 
 #pragma region Corrupt Corp Logic
-    if (NAUSEOUS&&)
+    {
+        Vector2 corpPos = { corpPosX, corpPosZ };
+
+        // if (Vector2Length(corp))
+        // {
+        //     /* code */
+        // }
+
+    }
 #pragma endregion
 
-        // clamp velocity
-        velocity = (velocity < maxSpeed) * velocity + (velocity >= maxSpeed) * maxSpeed;
+    // clamp velocity
+    velocity = (velocity < maxSpeed) * velocity + (velocity >= maxSpeed) * maxSpeed;
     velocity = (velocity > 0.0f) * velocity;
 
     playerPos.x += cos(playerRot * DEG2RAD) * velocity * timeDelta;
