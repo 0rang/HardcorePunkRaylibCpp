@@ -18,7 +18,7 @@ bool gameLogicLocked = false;
 #pragma region Puddle Params
 constexpr double slideDuration = 1.0;
 constexpr float postSlideDeceleration = 5.0f;
-const int numPuddles = 1;
+const int numPuddles = 20;
 PuddleState* puddles;
 double slideTime = -10.0;
 bool inAPuddle = false;
@@ -68,8 +68,10 @@ void HandleInput() {
 void GameLogicInit() {
     // allocate puddles
     puddles = static_cast<PuddleState*>(malloc(numPuddles * sizeof(PuddleState)));
-    PuddleState puddle0 = { 0.0f, -30.0f, 2.0f };
-    puddles[0] = puddle0;
+    for (int i = 0;i < numPuddles;i++) {
+        PuddleState puddle0 = { -30 + rand() % 60, -80.0f + rand() % 160, 1.5f };
+        puddles[i] = puddle0;
+    }
 }
 
 // TODO: actually pause the game here and tell the player what happened
@@ -192,8 +194,7 @@ void GameLogicUpdate() {
     {
         Vector2 corpPos = { corpPosX, corpPosZ };
 
-        if (Vector2Length(Vector2Subtract(corpPos,{playerPos.x, playerPos.z} )) < corpTriggerDist && drunkTier == NAUSEOUS)
-        {
+        if (Vector2Length(Vector2Subtract(corpPos, { playerPos.x, playerPos.z })) < corpTriggerDist && drunkTier == NAUSEOUS) {
             LockGameLogic();
         }
 
