@@ -33,8 +33,8 @@ int main() {
             BeginDrawing();
             ClearBackground(RAYWHITE);
             Draw3DObjects();
-            DrawText("FIN", SCREEN_WIDTH / 2 - 10, SCREEN_HEIGHT / 2 - 10, 40, GOLD);
-            DrawText("Press space to restart", SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 10, 20, GOLD);
+            DrawText("FIN", SCREEN_WIDTH / 2 - 35, SCREEN_HEIGHT / 2 - 50, 40, GOLD);
+            DrawText("Press space to restart", SCREEN_WIDTH / 2 - 125, SCREEN_HEIGHT / 2 - 10, 20, GOLD);
             EndDrawing();
         }
 
@@ -61,9 +61,6 @@ int main() {
             DrawText(TextFormat("GET TO EVIL CORP OR GET SOBER BEFORE YOU PUKE"), (SCREEN_WIDTH / 2) - 400, SCREEN_HEIGHT - 100, 30, DARKPURPLE);
             DrawText(TextFormat("Puke Countdown : %i", static_cast<int>(nauseousCountdown)), SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT - 50, 20, DARKPURPLE);
         }
-
-        DrawText("FIN", SCREEN_WIDTH / 2 - 35, SCREEN_HEIGHT / 2 - 50, 40, GOLD);
-        DrawText("Press space to restart", SCREEN_WIDTH / 2 - 125, SCREEN_HEIGHT / 2 - 10, 20, GOLD);
     
         EndDrawing();
     }

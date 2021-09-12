@@ -18,7 +18,7 @@ bool gameLogicLocked = false;
 #pragma region Puddle Params
 constexpr double slideDuration = 1.0;
 constexpr float postSlideDeceleration = 5.0f;
-constexpr int numPuddles = 1;
+const int numPuddles = 1;
 PuddleState* puddles;
 double slideTime = -10.0;
 bool inAPuddle = false;
@@ -49,6 +49,7 @@ float swayDir; // direction of tumble (1.0 or -1.0)
 #pragma region Corrupt Corp Params
 float corpPosX = 5;
 float corpPosY = -5;
+float corpTriggerDist;
 #pragma endregion
 
 
@@ -189,7 +190,7 @@ void GameLogicUpdate() {
 #pragma endregion
 
 #pragma region Corrupt Corp Logic
-
+    if (NAUSEOUS && )
 #pragma endregion
 
     // clamp velocity
@@ -207,7 +208,7 @@ void GameLogicUpdate() {
         if (CheckColliders(playerCollider, obstacles[i]) && (obstacles[i].type == BIG_WALL_COLLIDER || playerPos.y < 1.0f)) {
             Vector2 pushback = FindPushBack(playerCollider, obstacles[i]);
             playerPos.x -= pushback.x;
-            playerPos.z += pushback.y;
+            playerPos.z += pushback.y
             if (velocity > 5.0f) {
                 velocity /= 2.0f;
                 drunkTier = static_cast<DrunkTier>((drunkTier > SOBER) ? (drunkTier - 1) : drunkTier);

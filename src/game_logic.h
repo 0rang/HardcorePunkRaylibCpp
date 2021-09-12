@@ -17,6 +17,7 @@ struct PuddleState {
     float size = 2.0f;
 };
 extern PuddleState* puddles;
+extern const int numPuddles;
 
 enum DrunkTier {
     SOBER,
@@ -35,6 +36,9 @@ extern bool gameLogicLocked;
 
 extern Vector3 playerPos;
 extern float playerRot;
+
+extern float corpPosX = 5;
+extern float corpPosZ = -5;
 
 extern float velocity;
 extern bool grounded;
