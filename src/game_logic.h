@@ -21,7 +21,8 @@ extern PuddleState* puddles;
 enum DrunkTier {
     SOBER,
     TIPSY,
-    NAUSEOUS
+    NAUSEOUS,
+    BLACKOUT
 };
 extern DrunkTier drunkTier;
 extern float sidewaysVelocity;
@@ -30,6 +31,8 @@ extern double tumbleInterval;
 
 extern double nauseousCountdown;
 
+extern bool gameLogicLocked;
+
 extern Vector3 playerPos;
 extern float playerRot;
 
@@ -37,5 +40,6 @@ extern float velocity;
 extern bool grounded;
 void GameLogicInit();
 void GameLogicUpdate();
+void ResetGameState();
 void GameLogicCleanup();
 #endif
