@@ -50,7 +50,7 @@ float swayDir; // direction of tumble (1.0 or -1.0)
 #pragma region Corrupt Corp Params
 float corpPosX = 0.0f;
 float corpPosZ = -100.0f;
-float corpTriggerDist = 50;
+float corpTriggerDist = 5;
 #pragma endregion
 
 
