@@ -23,7 +23,7 @@ bool inAPuddle = false;
 #pragma endregion
 
 #pragma region Jump Params
-constexpr float initialJumpVelocity = 8.0f;
+constexpr float initialJumpVelocity = 5.6f;
 constexpr float gravity = 9.0f; //should be positive
 bool grounded = true;
 float jumpVelocity = 0.0f;
@@ -139,13 +139,13 @@ void GameLogicUpdate() {
     }
 #pragma endregion
 
-// make player tumble when drunk and start game end timer when nauseated
+    // make player tumble when drunk and start game end timer when nauseated
 #pragma region Drunk Effects
     if (velocity > maxSpeed / 2.0f && drunkTier > SOBER &&
-    GetTime() > lastTumbleTime + tumbleInterval) {
-            swayDir = (rand() % 2) ? 1.0f : -1.0f; // randomly picks left or right tumble
-            sidewaysVelocity = tumbleSpeed * swayDir;
-            lastTumbleTime = GetTime();
+        GetTime() > lastTumbleTime + tumbleInterval) {
+        swayDir = (rand() % 2) ? 1.0f : -1.0f; // randomly picks left or right tumble
+        sidewaysVelocity = tumbleSpeed * swayDir;
+        lastTumbleTime = GetTime();
     }
 
     sidewaysVelocity -= tumbleDrag * swayDir * timeDelta; // dampen tumble velocity
@@ -161,27 +161,23 @@ void GameLogicUpdate() {
     playerPos.z -= sin((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
 
     // set end timer 
-    if (drunkTier == NAUSEOUS)
-    {
-        if (nauseousTimerStarted)
-        {
+    if (drunkTier == NAUSEOUS) {
+        if (nauseousTimerStarted) {
             nauseousStartTime = GetTime();
             nauseousTimerStarted = true;
         }
-        
-        if (GetTime() > nauseousStartTime + nauseousTimeLimit)
-        {
+
+        if (GetTime() > nauseousStartTime + nauseousTimeLimit) {
             ResetGameState();
         }
-        
+
     }
-    else
-    {
+    else {
         nauseousTimerStarted = false;
     }
-    
-    
-    
+
+
+
 
 #pragma endregion
 
@@ -201,7 +197,7 @@ void GameLogicUpdate() {
     playerCollider.rot = playerRot + 90;
     //handle collisions
     for (int i = 0;i < obstacles.size();i++) {
-        if (CheckColliders(playerCollider, obstacles[i])) {
+        if (CheckColliders(playerCollider, obstacles[i]) && (obstacles[i].type == BIG_WALL_COLLIDER || playerPos.y < 1.0f)) {
             Vector2 pushback = FindPushBack(playerCollider, obstacles[i]);
             playerPos.x -= pushback.x;
             playerPos.z += pushback.y;
