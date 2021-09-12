@@ -73,7 +73,7 @@ void GameLogicInit() {
 }
 
 // TODO: actually pause the game here and tell the player what happened
-void LockGameLogic(){
+void LockGameLogic() {
     gameLogicLocked = true;
     velocity = 0;
     sidewaysVelocity = 0;
@@ -139,11 +139,10 @@ void GameLogicUpdate() {
             collectables[i].active = false;
             drunkTier = static_cast<DrunkTier>(drunkTier + 1);
             lastTumbleTime = GetTime();
-            if (drunkTier == BLACKOUT)
-            {
+            if (drunkTier == BLACKOUT)             {
                 LockGameLogic();
             }
-            
+
         }
     }
 #pragma endregion
@@ -183,18 +182,18 @@ void GameLogicUpdate() {
     else {
         nauseousTimerStarted = false;
     }
-    
+
     nauseousCountdown = nauseousStartTime + nauseousTimeLimit - GetTime();
-    
+
 
 #pragma endregion
 
 #pragma region Corrupt Corp Logic
-    if (NAUSEOUS && )
+    if (NAUSEOUS&&)
 #pragma endregion
 
-    // clamp velocity
-    velocity = (velocity < maxSpeed) * velocity + (velocity >= maxSpeed) * maxSpeed;
+        // clamp velocity
+        velocity = (velocity < maxSpeed) * velocity + (velocity >= maxSpeed) * maxSpeed;
     velocity = (velocity > 0.0f) * velocity;
 
     playerPos.x += cos(playerRot * DEG2RAD) * velocity * timeDelta;
@@ -208,7 +207,7 @@ void GameLogicUpdate() {
         if (CheckColliders(playerCollider, obstacles[i]) && (obstacles[i].type == BIG_WALL_COLLIDER || playerPos.y < 1.0f)) {
             Vector2 pushback = FindPushBack(playerCollider, obstacles[i]);
             playerPos.x -= pushback.x;
-            playerPos.z += pushback.y
+            playerPos.z += pushback.y;
             if (velocity > 5.0f) {
                 velocity /= 2.0f;
                 drunkTier = static_cast<DrunkTier>((drunkTier > SOBER) ? (drunkTier - 1) : drunkTier);
