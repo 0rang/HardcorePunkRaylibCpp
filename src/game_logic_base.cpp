@@ -99,7 +99,7 @@ void GameLogicUpdate() {
         }
         if (GetTime() - slideTime > slideDuration) {
             maxSpeed = maxSpeed - postSlideDeceleration * timeDelta; // decelerate
-            maxSpeed = maxSpeed > normalMaxSpeed ? maxSpeed : normalMaxSpeed; // clamp decelaration
+            maxSpeed = maxSpeed > defaultMaxSpeed ? maxSpeed : defaultMaxSpeed; // clamp decelaration
         }
     }
 #pragma endregion
@@ -133,30 +133,29 @@ void GameLogicUpdate() {
 #pragma endregion
 
 #pragma region Drunk Tumble
-
-    if (velocity > maxSpeed / 2.0f && drunkTier > SOBER){
-        if (GetTime() > lastTumbleTime + tumbleInterval)
-        {
-            srand(GetTime());
-            float swayDir = (rand() % 2) ? 1.0f : -1.0f; // randomly picks left or right tumble
-            sidewaysVelocity = tumbleSpeed * swayDir;
-            lastTumbleTime = GetTime();
-        }
-    }
+    // if (velocity > maxSpeed / 2.0f && drunkTier > SOBER){
+    //     if (GetTime() > lastTumbleTime + tumbleInterval)
+    //     {
+    //         srand(GetTime());
+    //         float swayDir = (rand() % 2) ? 1.0f : -1.0f; // randomly picks left or right tumble
+    //         sidewaysVelocity = tumbleSpeed * swayDir;
+    //         lastTumbleTime = GetTime();
+    //     }
+    // }
     
-    sidewaysVelocity -= tumbleDrag * swayDir * timeDelta; // dampen tumble velocity
-    // if swayDir is positive, clamp to 0 when sidewaysVelocity goes negative and vice versa
-    if (swayDir > 0)
-    {
-        sidewaysVelocity = (sidewaysVelocity > 0.0f) ? sidewaysVelocity : 0.0f;
-    }
-    else
-    {
-        sidewaysVelocity = (sidewaysVelocity < 0.0f) ? sidewaysVelocity : 0.0f;
-    }
+    // sidewaysVelocity -= tumbleDrag * swayDir * timeDelta; // dampen tumble velocity
+    // // if swayDir is positive, clamp to 0 when sidewaysVelocity goes negative and vice versa
+    // if (swayDir > 0)
+    // {
+    //     sidewaysVelocity = (sidewaysVelocity > 0.0f) ? sidewaysVelocity : 0.0f;
+    // }
+    // else
+    // {
+    //     sidewaysVelocity = (sidewaysVelocity < 0.0f) ? sidewaysVelocity : 0.0f;
+    // }
     
-    playerPos.x += cos((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
-    playerPos.z -= sin((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
+    // playerPos.x += cos((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
+    // playerPos.z -= sin((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
 #pragma endregion
 
     // clamp velocity
