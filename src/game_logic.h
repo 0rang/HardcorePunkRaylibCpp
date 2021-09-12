@@ -37,8 +37,8 @@ extern bool gameLogicLocked;
 extern Vector3 playerPos;
 extern float playerRot;
 
-extern float corpPosX = 5;
-extern float corpPosZ = -5;
+extern float corpPosX;
+extern float corpPosZ;
 
 extern float velocity;
 extern bool grounded;

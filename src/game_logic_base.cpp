@@ -48,7 +48,7 @@ float swayDir; // direction of tumble (1.0 or -1.0)
 
 #pragma region Corrupt Corp Params
 float corpPosX = 5;
-float corpPosY = -5;
+float corpPosZ = -5;
 float corpTriggerDist;
 #pragma endregion
 
@@ -190,7 +190,15 @@ void GameLogicUpdate() {
 #pragma endregion
 
 #pragma region Corrupt Corp Logic
-    if (NAUSEOUS && )
+    {
+        //Vector2 corpPosX = static_cast<Vector2>({corpPosX, corpPosZ});
+
+        // if (Vector2Length(corp))
+        // {
+        //     /* code */
+        // }
+        
+    }
 #pragma endregion
 
     // clamp velocity
