@@ -192,9 +192,9 @@ void GameLogicUpdate() {
     {
         Vector2 corpPos = { corpPosX, corpPosZ };
 
-        // if (Vector2Length(corp))
+        // if (Vector2Length(Vector2Subtract(corpPos,{playerPos.x, playerPos.z} )) < corpTriggerDist)
         // {
-        //     /* code */
+            
         // }
 
     }
