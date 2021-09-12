@@ -42,7 +42,10 @@ void Draw3DObjects() {
             DrawModelEx(bigWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, WHITE);
     }
     DrawModel(floorModel, { .0f,-.1f,.0f }, 1.0f, DARKGRAY);
-    DrawGrid(200, 1.0f);
+    //Draw objective
+    DrawModel(bspModel, { -40.0f,.0f,.0f }, .3f, BROWN);
+
+    //DrawGrid(200, 1.0f);
     EndMode3D();
 }
 void GraphicsCleanup() {

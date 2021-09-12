@@ -6,6 +6,7 @@ Model playerModel;
 Model smallWallModel;
 Model bigWallModel;
 Model beerModel;
+Model bspModel;
 Shader lshader;
 void ModelsInit() {
     floorModel = LoadModel(ASSETS_PATH"PlaneText.gltf");
@@ -16,6 +17,8 @@ void ModelsInit() {
     lshader = LoadShader(ASSETS_PATH"getnormal.vs", ASSETS_PATH"veclighting.fs");
     bigWallModel = LoadModel(ASSETS_PATH"BigWallText.gltf");
     bigWallModel.transform = MatrixMultiply(MatrixScale(1.0f, 1.0f, .125f), bigWallModel.transform);
+    bspModel = LoadModel(ASSETS_PATH"corruptbuilding.gltf");
+    bspModel.materials[0].shader = lshader;
     smallWallModel.materials[0].shader = lshader;
     bigWallModel.materials[0].shader = lshader;
     playerModel.materials[0].shader = lshader;
@@ -25,6 +28,7 @@ void ModelsCleanup() {
     UnloadShader(lshader);
     UnloadModel(playerModel);
     UnloadModel(smallWallModel);
+    UnloadModel(bigWallModel);
     UnloadModel(floorModel);
     UnloadModel(beerModel);
 }
