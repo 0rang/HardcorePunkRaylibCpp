@@ -73,7 +73,7 @@ void GameLogicInit() {
 }
 
 // TODO: actually pause the game here and tell the player what happened
-void LockGameLogic(){
+void LockGameLogic() {
     gameLogicLocked = true;
     velocity = 0;
     sidewaysVelocity = 0;
@@ -139,11 +139,10 @@ void GameLogicUpdate() {
             collectables[i].active = false;
             drunkTier = static_cast<DrunkTier>(drunkTier + 1);
             lastTumbleTime = GetTime();
-            if (drunkTier == BLACKOUT)
-            {
+            if (drunkTier == BLACKOUT) {
                 LockGameLogic();
             }
-            
+
         }
     }
 #pragma endregion
@@ -183,21 +182,21 @@ void GameLogicUpdate() {
     else {
         nauseousTimerStarted = false;
     }
-    
+
     nauseousCountdown = nauseousStartTime + nauseousTimeLimit - GetTime();
-    
+
 
 #pragma endregion
 
 #pragma region Corrupt Corp Logic
     {
-        Vector2 corpPos = {corpPosX, corpPosZ};
+        Vector2 corpPos = { corpPosX, corpPosZ };
 
         // if (Vector2Length(Vector2Subtract(corpPos,{playerPos.x, playerPos.z} )) < corpTriggerDist)
         // {
             
         // }
-        
+
     }
 #pragma endregion
 

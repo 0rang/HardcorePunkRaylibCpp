@@ -25,6 +25,7 @@ void Draw3DObjects() {
 
     //Draw Player
     //position
+    DrawModelEx(charModel, { playerPos.x ,playerPos.y + .4f,playerPos.z }, { .0f,1.0f,.0f }, playerRot, { 1.0f,1.0f,1.0f }, WHITE);
     DrawModelEx(playerModel, playerPos, { .0f,1.0f,.0f }, 90 + playerRot, { 1.0f,1.0f,1.0f }, WHITE);
     //Draw Collectables
     for (int i = 0;i < collectables.size(); i++) {
