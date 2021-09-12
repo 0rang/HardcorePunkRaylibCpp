@@ -69,11 +69,10 @@ void GameLogicInit() {
 }
 
 // TODO: actually pause the game here and tell the player what happened
-void ResetGameState (){
+void ResetGameState() {
     drunkTier = SOBER;
-    playerPos = {0.0f, 0.0f, 0.0f};
-    for (Collectable& collec : collectables)
-    {
+    playerPos = { 0.0f, 0.0f, 0.0f };
+    for (Collectable& collec : collectables) {
         collec.active = true;
     }
 
@@ -125,11 +124,10 @@ void GameLogicUpdate() {
 #pragma endregion
 
 #pragma region Set Drunkness
-    for (int i = 0; i < collectables.size(); i++){
-        if (collectables[i].active && collectables[i].hits({playerPos.x, playerPos.z})){
+    for (int i = 0; i < collectables.size(); i++) {
+        if (collectables[i].active && collectables[i].hits({ playerPos.x, playerPos.z })) {
             collectables[i].active = false;
-            if (drunkTier <= NAUSEOUS)
-            {
+            if (drunkTier <= NAUSEOUS) {
                 lastTumbleTime = GetTime(); //don't tumble straight away
                 drunkTier = static_cast<DrunkTier>(drunkTier + 1);
             }
@@ -149,18 +147,16 @@ void GameLogicUpdate() {
             sidewaysVelocity = tumbleSpeed * swayDir;
             lastTumbleTime = GetTime();
     }
-    
+
     sidewaysVelocity -= tumbleDrag * swayDir * timeDelta; // dampen tumble velocity
     // if swayDir is positive, clamp to 0 when sidewaysVelocity goes negative and vice versa
-    if (swayDir > 0)
-    {
+    if (swayDir > 0) {
         sidewaysVelocity = (sidewaysVelocity > 0.0f) ? sidewaysVelocity : 0.0f;
     }
-    else
-    {
+    else {
         sidewaysVelocity = (sidewaysVelocity < 0.0f) ? sidewaysVelocity : 0.0f;
     }
-    
+
     playerPos.x += cos((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
     playerPos.z -= sin((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
 
@@ -209,6 +205,10 @@ void GameLogicUpdate() {
             Vector2 pushback = FindPushBack(playerCollider, obstacles[i]);
             playerPos.x -= pushback.x;
             playerPos.z += pushback.y;
+            if (velocity > 5.0f) {
+                velocity /= 2.0f;
+                drunkTier = static_cast<DrunkTier>((drunkTier > SOBER) ? (drunkTier - 1) : drunkTier);
+            }
         }
     }
 
