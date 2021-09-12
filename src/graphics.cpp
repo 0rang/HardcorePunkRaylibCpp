@@ -36,8 +36,7 @@ void Draw3DObjects() {
         }
     }
     DrawCircle3D({ puddles[0].posX, 0.0, puddles[0].posY }, puddles[0].size, { 1,0,0 }, 90.0, ORANGE);
-    playerCollider.pos = { playerPos.x,playerPos.z };
-    playerCollider.rot = playerRot + 90;
+
     //Draw Obstacles
     for (int i = 0;i < obstacles.size();i++) {
         if (CheckColliders(playerCollider, obstacles[i]))

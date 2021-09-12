@@ -2,6 +2,7 @@
 #include "collisions.h"
 #include "raylib.h"
 #include "raymath.h"
+#include "collisions.h"
 #include <stdlib.h>
 constexpr float acceleration = .1f;
 constexpr float turnSpeed = 1.0f;//in deg/s 
@@ -9,6 +10,8 @@ constexpr float defaultMaxSpeed = 10.0f;
 float maxSpeed = defaultMaxSpeed;
 Vector3 playerPos = { .0f,.0f,.0f };
 float playerRot = 90.0f;
+constexpr float reboundFade = 2.0f;
+static Vector2 collisionRebound = {};
 
 #pragma region Puddle Params
 constexpr double slideDuration = 1.0;
@@ -75,34 +78,34 @@ void GameLogicUpdate() {
 
 #pragma region Slide in Puddle
     {
-    bool in_a_puddle_prev_frame = inAPuddle;
-    inAPuddle = false;
+        bool in_a_puddle_prev_frame = inAPuddle;
+        inAPuddle = false;
 
-    // check all puddle distances from player
-    for (int i = 0; i < numPuddles; i++) {
-        Vector2 playerPos2d = { playerPos.x, playerPos.z };
-        Vector2 puddlePos = { puddles[i].posX, puddles[i].posY };
-        // is distance to player pos smaller than puddle radius?
-        if (Vector2Length(Vector2Subtract(playerPos2d, puddlePos)) < puddles[i].size) {
-            inAPuddle = true;
+        // check all puddle distances from player
+        for (int i = 0; i < numPuddles; i++) {
+            Vector2 playerPos2d = { playerPos.x, playerPos.z };
+            Vector2 puddlePos = { puddles[i].posX, puddles[i].posY };
+            // is distance to player pos smaller than puddle radius?
+            if (Vector2Length(Vector2Subtract(playerPos2d, puddlePos)) < puddles[i].size) {
+                inAPuddle = true;
+            }
+        }
+
+        // make player slide if we have just entered a puddle and player is grounded
+        if (inAPuddle && !in_a_puddle_prev_frame && grounded) {
+            maxSpeed *= 2.0f;
+            velocity *= 2.0f;
+            slideTime = GetTime();
+        }
+        if (GetTime() - slideTime > slideDuration) {
+            maxSpeed = maxSpeed - postSlideDeceleration * timeDelta; // decelerate
+            maxSpeed = maxSpeed > normalMaxSpeed ? maxSpeed : normalMaxSpeed; // clamp decelaration
         }
     }
-
-    // make player slide if we have just entered a puddle and player is grounded
-    if (inAPuddle && !in_a_puddle_prev_frame && grounded) {
-        maxSpeed *= 2.0f;
-        velocity *= 2.0f;
-        slideTime = GetTime();
-    }
-    if (GetTime() - slideTime > slideDuration) {
-        maxSpeed = maxSpeed - postSlideDeceleration * timeDelta; // decelerate
-        maxSpeed = maxSpeed > defaultMaxSpeed ? maxSpeed : defaultMaxSpeed; // clamp decelaration
-    }
-    }
 #pragma endregion
-    
+
 #pragma region Jump
-    if(IsKeyPressed(KEY_SPACE) && grounded){
+    if (IsKeyPressed(KEY_SPACE) && grounded) {
         jumpVelocity = initialJumpVelocity;
     }
     playerPos.y += jumpVelocity * timeDelta;
@@ -163,6 +166,18 @@ void GameLogicUpdate() {
     playerPos.x += cos(playerRot * DEG2RAD) * velocity * timeDelta;
     // subtract due to GL coord system (Z towards for our camera)
     playerPos.z -= sin(playerRot * DEG2RAD) * velocity * timeDelta;
+
+    playerCollider.pos = { playerPos.x,playerPos.z };
+    playerCollider.rot = playerRot + 90;
+    //handle collisions
+    for (int i = 0;i < obstacles.size();i++) {
+        if (CheckColliders(playerCollider, obstacles[i])) {
+            Vector2 pushback = FindPushBack(playerCollider, obstacles[i]);
+            playerPos.x -= pushback.x;
+            playerPos.z += pushback.y;
+        }
+    }
+
 }
 void GameLogicCleanup() {
     free(puddles);

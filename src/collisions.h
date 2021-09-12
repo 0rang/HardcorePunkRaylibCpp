@@ -12,4 +12,5 @@ struct ObjectCollider {
 extern ObjectCollider playerCollider;
 extern std::vector<ObjectCollider> obstacles;
 void ObstaclesInit();
+Vector2 FindPushBack(ObjectCollider target, ObjectCollider obstruction);
 bool CheckColliders(const ObjectCollider& o1, const ObjectCollider& o2);

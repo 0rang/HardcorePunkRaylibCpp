@@ -14,15 +14,21 @@ void ObstaclesInit() {
     playerCollider.bbox.max.x *= 0.19992423057556152f;
     o.pos.y = 10.0f;
     obstacles.push_back(o);
+    o.pos.x = 1.0f;
+    obstacles.push_back(o);
 }
 ObjectCollider::ObjectCollider(const Model& model) {
     bbox = MeshBoundingBox(model.meshes[0]);
 }
-float ProjectAxis(Vector2 axis, Vector2 point) {
+Vector2 ProjectAxisXY(Vector2 axis, Vector2 point) {
     float x = ((point.x * axis.x + point.y * axis.y) * axis.x / (axis.x * axis.x + axis.y * axis.y));
     float y = ((point.x * axis.x + point.y * axis.y) * axis.y / (axis.x * axis.x + axis.y * axis.y));
-    return Vector2DotProduct({ x,y }, axis);
+    return { x,y };
 }
+float ProjectAxis(Vector2 axis, Vector2 point) {
+    return Vector2DotProduct(ProjectAxisXY(axis, point), axis);
+}
+
 bool CheckColliders(const ObjectCollider& o1, const ObjectCollider& o2) {
     //tranform o2 to o1 local space
     Vector2 newpos = Vector2Subtract(o2.pos, o1.pos);
@@ -107,4 +113,45 @@ bool CheckColliders(const ObjectCollider& o1, const ObjectCollider& o2) {
         return false;
 
     return true;
+}
+Vector2 FindPushBack(ObjectCollider target, ObjectCollider obstacle) {
+    Vector2 obstacleNormals[4];
+    obstacleNormals[0] = { static_cast<float>(abs(obstacle.bbox.max.x) * cos(DEG2RAD * obstacle.rot)),
+    static_cast<float>(-(abs(obstacle.bbox.max.x)) * sin(DEG2RAD * obstacle.rot)) };
+    obstacleNormals[1] = { static_cast<float>(abs(obstacle.bbox.max.z) * cos(DEG2RAD * (obstacle.rot - 90))),
+    static_cast<float>(-(abs(obstacle.bbox.max.z)) * sin(DEG2RAD * (obstacle.rot - 90))) };
+    obstacleNormals[2] = { static_cast<float>(abs(obstacle.bbox.min.x) * cos(DEG2RAD * (obstacle.rot - 180))),
+    static_cast<float>(-(abs(obstacle.bbox.min.x)) * sin(DEG2RAD * (obstacle.rot - 180))) };
+    obstacleNormals[3] = { static_cast<float>(abs(obstacle.bbox.min.z) * cos(DEG2RAD * (obstacle.rot - 270))),
+    static_cast<float>(-(abs(obstacle.bbox.min.z)) * sin(DEG2RAD * (obstacle.rot - 270))) };
+    //find closest corner
+    Vector2 targetOffset = Vector2Subtract(target.pos, obstacle.pos);
+    Vector2 closestCorner = { target.bbox.max.x + targetOffset.x,target.bbox.max.z + targetOffset.y };
+    float closestDist = (target.bbox.max.x + targetOffset.x) * (target.bbox.max.x + targetOffset.x)
+        + (target.bbox.max.z + targetOffset.y) * (target.bbox.max.z + targetOffset.y);
+    float res = (target.bbox.max.x + targetOffset.x) * (target.bbox.max.x + targetOffset.x)
+        + (target.bbox.min.z + targetOffset.y) * (target.bbox.min.z + targetOffset.y);
+    if (res < closestDist) {
+        closestDist = res;
+        closestCorner = { target.bbox.max.x + targetOffset.x,target.bbox.min.z + targetOffset.y };
+    }
+    res = (target.bbox.min.x + targetOffset.x) * (target.bbox.min.x + targetOffset.x)
+        + (target.bbox.min.z + targetOffset.y) * (target.bbox.min.z + targetOffset.y);
+    if (res < closestDist) {
+        closestDist = res;
+        closestCorner = { target.bbox.min.x + targetOffset.x,target.bbox.min.z + targetOffset.y };
+    }
+    res = (target.bbox.min.x + targetOffset.x) * (target.bbox.min.x + targetOffset.x)
+        + (target.bbox.max.z + targetOffset.y) * (target.bbox.max.z + targetOffset.y);
+    if (res < closestDist) {
+        closestDist = res;
+        closestCorner = { target.bbox.min.x + targetOffset.x,target.bbox.max.z + targetOffset.y };
+    }
+    Vector2 projectedDiff = Vector2Subtract(obstacleNormals[0], ProjectAxisXY(obstacleNormals[0], closestCorner));
+    for (int i = 1;i < 4;i++) {
+        Vector2 candidateDiff = Vector2Subtract(obstacleNormals[i], ProjectAxisXY(obstacleNormals[i], closestCorner));
+        if ((candidateDiff.x) * (candidateDiff.x) + (candidateDiff.y) * (candidateDiff.y) < (projectedDiff.x) * (projectedDiff.x) + (projectedDiff.y) * (projectedDiff.y))
+            projectedDiff = candidateDiff;
+    }
+    return projectedDiff;
 }
