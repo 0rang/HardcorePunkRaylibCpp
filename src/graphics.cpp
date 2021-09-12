@@ -33,11 +33,11 @@ void Draw3DObjects() {
             DrawModel(beerModel, { collectables[i].location.x,.2f,collectables[i].location.y }, 3.0f, WHITE);
         }
     }
-    for (int i = 0; i < numPuddles; i++){
+    for (int i = 0; i < numPuddles; i++) {
         PuddleState puddle = puddles[i];
         DrawCircle3D({ puddle.posX, 0.0, puddle.posY }, puddle.size, { 1,0,0 }, 90.0, ORANGE);
     }
-    
+
 
     //Draw Obstacles
     for (int i = 0;i < obstacles.size();i++) {
@@ -48,7 +48,7 @@ void Draw3DObjects() {
     }
     DrawModel(floorModel, { .0f,-.1f,.0f }, 1.0f, DARKGRAY);
     //Draw objective
-    DrawModel(bspModel, { -40.0f,.0f,.0f }, .3f, BROWN);
+    DrawModel(bspModel, { corpPosX,.0f,corpPosZ }, .3f, BROWN);
 
     //DrawGrid(200, 1.0f);
     EndMode3D();
