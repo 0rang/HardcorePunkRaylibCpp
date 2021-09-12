@@ -12,6 +12,8 @@ Vector3 playerPos = { .0f,.0f,.0f };
 float playerRot = 90.0f;
 constexpr float reboundFade = 2.0f;
 static Vector2 collisionRebound = {};
+bool gameLogicLocked = false;
+
 
 #pragma region Puddle Params
 constexpr double slideDuration = 1.0;
@@ -30,12 +32,13 @@ float jumpVelocity = 0.0f;
 #pragma endregion
 
 #pragma region Drunk Movement Params
-constexpr double nauseousTimeLimit = 4.0f; // starts when nauseous; about to throw up; need to sober up or get to the goal 
+constexpr double nauseousTimeLimit = 8.0f; // starts when nauseous; about to throw up; need to sober up or get to the goal 
 constexpr double defaultTumbleInterval = 3.0f;
 constexpr float tumbleSpeed = 5.0f;
 constexpr float tumbleDrag = 4.0f;
 double nauseousStartTime;
-bool nauseousTimerStarted;
+double nauseousCountdown;
+bool nauseousTimerStarted = false;
 double tumbleInterval = defaultTumbleInterval; // configure based on drunkness and make slight random adjustments each time
 double lastTumbleTime = -10.0;
 DrunkTier drunkTier = SOBER;
@@ -69,6 +72,12 @@ void GameLogicInit() {
 }
 
 // TODO: actually pause the game here and tell the player what happened
+void LockGameLogic(){
+    gameLogicLocked = true;
+    velocity = 0;
+    sidewaysVelocity = 0;
+}
+
 void ResetGameState() {
     drunkTier = SOBER;
     playerPos = { 0.0f, 0.0f, 0.0f };
@@ -127,14 +136,13 @@ void GameLogicUpdate() {
     for (int i = 0; i < collectables.size(); i++) {
         if (collectables[i].active && collectables[i].hits({ playerPos.x, playerPos.z })) {
             collectables[i].active = false;
-            if (drunkTier <= NAUSEOUS) {
-                lastTumbleTime = GetTime(); //don't tumble straight away
-                drunkTier = static_cast<DrunkTier>(drunkTier + 1);
-            }
-            else // blackout drunk
+            drunkTier = static_cast<DrunkTier>(drunkTier + 1);
+            lastTumbleTime = GetTime();
+            if (drunkTier == BLACKOUT)
             {
-                ResetGameState();
+                LockGameLogic();
             }
+            
         }
     }
 #pragma endregion
@@ -162,22 +170,21 @@ void GameLogicUpdate() {
 
     // set end timer 
     if (drunkTier == NAUSEOUS) {
-        if (nauseousTimerStarted) {
+        if (!nauseousTimerStarted) {
             nauseousStartTime = GetTime();
             nauseousTimerStarted = true;
         }
-
-        if (GetTime() > nauseousStartTime + nauseousTimeLimit) {
-            ResetGameState();
+        else if (GetTime() > nauseousStartTime + nauseousTimeLimit) {
+            LockGameLogic();
         }
 
     }
     else {
         nauseousTimerStarted = false;
     }
-
-
-
+    
+    nauseousCountdown = nauseousStartTime + nauseousTimeLimit - GetTime();
+    
 
 #pragma endregion
 
