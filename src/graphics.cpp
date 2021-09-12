@@ -39,10 +39,10 @@ void Draw3DObjects() {
 
     //Draw Obstacles
     for (int i = 0;i < obstacles.size();i++) {
-        if (CheckColliders(playerCollider, obstacles[i]))
-            DrawModelEx(smallWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, RED);
-        else
+        if (obstacles[i].type == SHORT_WALL_COLLIDER)
             DrawModelEx(smallWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, WHITE);
+        else if (obstacles[i].type == BIG_WALL_COLLIDER)
+            DrawModelEx(bigWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, WHITE);
     }
     DrawModel(floorModel, { .0f,-.1f,.0f }, 1.0f, DARKGRAY);
     DrawGrid(200, 1.0f);
