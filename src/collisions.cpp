@@ -19,7 +19,7 @@ void ObstaclesInit() {
     o2.type = BIG_WALL_COLLIDER;
     o2.bbox.min.z *= .125;
     o2.bbox.max.z *= .125;
-    for (float y = -100;y < 100;y += 4.0f) {
+    for (float y = -100;y < 90;y += 4.5f) {
         for (float x = -30;x < 30;x += 1) {
             if (rand() % 2) {
                 if (rand() % 2) {

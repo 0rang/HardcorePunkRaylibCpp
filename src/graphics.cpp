@@ -46,9 +46,9 @@ void Draw3DObjects() {
         else if (obstacles[i].type == BIG_WALL_COLLIDER)
             DrawModelEx(bigWallModel, { obstacles[i].pos.x,0.5f,obstacles[i].pos.y }, { .0f,1.0f,.0f }, obstacles[i].rot, { 1.0f,1.0f,1.0f }, WHITE);
     }
-    DrawModel(floorModel, { .0f,-.1f,.0f }, 1.0f, DARKGRAY);
+    DrawModel(floorModel, { .0f,0.0f,.0f }, 1.0f, DARKGRAY);
     //Draw objective
-    DrawModel(bspModel, { corpPosX,.0f,corpPosZ }, .3f, BROWN);
+    DrawModelEx(bspModel, { corpPosX,.0f,corpPosZ }, { .0f,1.0f,.0f }, -90.0f, { .3f,.3f,.3f }, BROWN);
 
     //DrawGrid(200, 1.0f);
     EndMode3D();

@@ -8,7 +8,7 @@ constexpr float acceleration = .1f;
 constexpr float turnSpeed = 1.0f;//in deg/s 
 constexpr float defaultMaxSpeed = 10.0f;
 float maxSpeed = defaultMaxSpeed;
-Vector3 playerPos = { .0f,.0f,.0f };
+Vector3 playerPos = { .0f,.0f,80.0f };
 float playerRot = 90.0f;
 constexpr float reboundFade = 2.0f;
 static Vector2 collisionRebound = {};
@@ -47,8 +47,8 @@ float swayDir; // direction of tumble (1.0 or -1.0)
 #pragma endregion 
 
 #pragma region Corrupt Corp Params
-float corpPosX = 5;
-float corpPosZ = -5;
+float corpPosX = 0.0f;
+float corpPosZ = -100.0f;
 float corpTriggerDist = 50;
 #pragma endregion
 
@@ -69,7 +69,7 @@ void GameLogicInit() {
     // allocate puddles
     puddles = static_cast<PuddleState*>(malloc(numPuddles * sizeof(PuddleState)));
     for (int i = 0;i < numPuddles;i++) {
-        PuddleState puddle0 = { -30 + rand() % 60, -80.0f + rand() % 160, 1.5f };
+        PuddleState puddle0 = { -30.0f + rand() % 60, -80.0f + rand() % 160, 1.5f };
         puddles[i] = puddle0;
     }
 }
@@ -83,7 +83,7 @@ void LockGameLogic() {
 
 void ResetGameState() {
     drunkTier = SOBER;
-    playerPos = { 0.0f, 0.0f, 0.0f };
+    playerPos = { 0.0f, 0.0f, 80.0f };
     for (Collectable& collec : collectables) {
         collec.active = true;
     }

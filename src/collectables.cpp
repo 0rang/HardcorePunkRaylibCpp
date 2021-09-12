@@ -4,13 +4,13 @@
 #include <cstdlib>
 #include <ctime>
 std::vector<Collectable> collectables;
-constexpr unsigned int collectableCount = 30;
+constexpr unsigned int collectableCount = 60;
 void CollectablesInit() {
     std::srand(std::time(NULL));
     Collectable c;
     for (int i = 0;i < collectableCount;i++) {
-        c.location.x = 50.0f - rand() % 1000 / 10.0f;
-        c.location.y = 50.0f - rand() % 1000 / 10.0f;
+        c.location.x = 100.0f - rand() % 2000 / 10.0f;
+        c.location.y = 100.0f - rand() % 2000 / 10.0f;
         collectables.push_back(c);
     }
 }
