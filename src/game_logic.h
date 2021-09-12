@@ -2,9 +2,7 @@
 #define GAME_LOGIC_H
 #include <vector>
 #include "raylib.h"
-// parts of game logic that influence drawing
-// don't know if this is a good idea
-// TODO: probably refactor
+
 struct Collectable {
     Vector2 location;
     bool active = true;
@@ -16,12 +14,25 @@ extern std::vector<Collectable> collectables;
 struct PuddleState {
     float posX = .0f;
     float posY = .0f;
-    float size = .5f;
+    float size = 2.0f;
 };
+extern PuddleState* puddles;
+
+enum DrunkTier {
+    SOBER,
+    TIPSY,
+    NAUSEOUS
+};
+extern DrunkTier drunkTier;
+extern float sidewaysVelocity;
+extern double lastTumbleTime;
+extern double tumbleInterval;
+
 extern Vector3 playerPos;
 extern float playerRot;
-extern PuddleState* puddles;
+
 extern float velocity;
+extern bool grounded;
 void GameLogicInit();
 void GameLogicUpdate();
 void GameLogicCleanup();

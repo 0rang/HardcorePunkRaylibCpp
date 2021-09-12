@@ -1,11 +1,12 @@
 #include "game_logic.h"
+#include "collisions.h"
 #include "raylib.h"
 #include "raymath.h"
 #include <stdlib.h>
 constexpr float acceleration = .1f;
 constexpr float turnSpeed = 1.0f;//in deg/s 
-constexpr float normalMaxSpeed = 10.0f;
-float maxSpeed = normalMaxSpeed;
+constexpr float defaultMaxSpeed = 10.0f;
+float maxSpeed = defaultMaxSpeed;
 Vector3 playerPos = { .0f,.0f,.0f };
 float playerRot = 90.0f;
 
@@ -25,6 +26,18 @@ bool grounded = true;
 float jumpVelocity = 0.0f;
 #pragma endregion
 
+#pragma region Drunk Movement Params
+constexpr double nauseousTime = 4.0f; // starts when nauseous; about to throw up; need to sober up or get to the goal 
+constexpr double defaultTumbleInterval = 3.0f;
+constexpr float tumbleSpeed = 5.0f;
+constexpr float tumbleDrag = 4.0f;
+double tumbleInterval = defaultTumbleInterval; // configure based on drunkness and make slight random adjustments each time
+double lastTumbleTime = -10.0;
+DrunkTier drunkTier = SOBER;
+float sidewaysVelocity = 0.0f;
+int swayDir; // direction of tumble (1.0 or -1.0)
+#pragma endregion 
+
 float velocity = .0f; //in m/s
 void HandleInput() {
     if (IsKeyDown(KEY_W) && grounded)
@@ -37,12 +50,25 @@ void HandleInput() {
         playerRot -= turnSpeed;
 }
 void GameLogicInit() {
-    // init puddles
+    // allocate puddles
     puddles = static_cast<PuddleState*>(malloc(numPuddles * sizeof(PuddleState)));
-
     PuddleState puddle0 = { 0.0f, -30.0f, 2.0f };
     puddles[0] = puddle0;
 }
+
+void ResetGameState (){
+    drunkTier = SOBER;
+    playerPos = {0.0f, 0.0f, 0.0f};
+    for (Collectable& collec : collectables)
+    {
+        collec.active = true;
+    }
+
+    // re-randomize collectables
+    collectables.clear();
+    CollectablesInit();
+}
+
 void GameLogicUpdate() {
     float timeDelta = GetFrameTime();
     HandleInput();
@@ -70,7 +96,7 @@ void GameLogicUpdate() {
     }
     if (GetTime() - slideTime > slideDuration) {
         maxSpeed = maxSpeed - postSlideDeceleration * timeDelta; // decelerate
-        maxSpeed = maxSpeed > normalMaxSpeed ? maxSpeed : normalMaxSpeed; // clamp decelaration
+        maxSpeed = maxSpeed > defaultMaxSpeed ? maxSpeed : defaultMaxSpeed; // clamp decelaration
     }
     }
 #pragma endregion
@@ -83,6 +109,51 @@ void GameLogicUpdate() {
     jumpVelocity -= gravity * timeDelta;
     playerPos.y = playerPos.y > 0.0f ? playerPos.y : 0.0f; // don't fall through the ground
     grounded = playerPos.y <= 0.0f;
+#pragma endregion
+
+#pragma region Set Drunkness
+    for (int i = 0; i < collectables.size(); i++){
+        if (collectables[i].active && collectables[i].hits({playerPos.x, playerPos.z})){
+            collectables[i].active = false;
+            if (drunkTier <= NAUSEOUS)
+            {
+                lastTumbleTime = GetTime(); //don't tumble straight away
+                drunkTier = static_cast<DrunkTier>(drunkTier + 1);
+            }
+            else // blackout drunk
+            {
+                ResetGameState();
+            }
+            
+        }
+    }
+#pragma endregion
+
+#pragma region Drunk Tumble
+
+    if (velocity > maxSpeed / 2.0f && drunkTier > SOBER){
+        if (GetTime() > lastTumbleTime + tumbleInterval)
+        {
+            srand(GetTime());
+            float swayDir = (rand() % 2) ? 1.0f : -1.0f; // randomly picks left or right tumble
+            sidewaysVelocity = tumbleSpeed * swayDir;
+            lastTumbleTime = GetTime();
+        }
+    }
+    
+    sidewaysVelocity -= tumbleDrag * swayDir * timeDelta; // dampen tumble velocity
+    // if swayDir is positive, clamp to 0 when sidewaysVelocity goes negative and vice versa
+    if (swayDir > 0)
+    {
+        sidewaysVelocity = (sidewaysVelocity > 0.0f) ? sidewaysVelocity : 0.0f;
+    }
+    else
+    {
+        sidewaysVelocity = (sidewaysVelocity < 0.0f) ? sidewaysVelocity : 0.0f;
+    }
+    
+    playerPos.x += cos((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
+    playerPos.z -= sin((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
 #pragma endregion
 
     // clamp velocity

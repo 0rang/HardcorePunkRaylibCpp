@@ -24,10 +24,14 @@ int main() {
         Draw3DObjects();
 
         //Debug Text
-        DrawText(TextFormat("X: %f", playerPos.x), 3, 0, 20, BLACK);
-        DrawText(TextFormat("Y: %f", playerPos.y), 3, 21, 20, BLACK);
-        DrawText(TextFormat("Z: %f", playerPos.z), 3, 42, 20, BLACK);
-        DrawText(TextFormat("V: %f", velocity), 3, 63, 20, BLACK);
+        DrawText(TextFormat("X: %f", playerPos.x), 3, 0, 20, WHITE);
+        DrawText(TextFormat("Y: %f", playerPos.y), 3, 21, 20, WHITE);
+        DrawText(TextFormat("Z: %f", playerPos.z), 3, 42, 20, WHITE);
+        DrawText(TextFormat("V: %f", velocity), 3, 63, 20, WHITE);
+        DrawText(TextFormat("SIDEWAYS V: %f", sidewaysVelocity), 3, 84, 20, GRAY);
+        DrawText(TextFormat("TIME TILL TUMBLE: %f", (lastTumbleTime + tumbleInterval) - GetTime() ), 3, 105, 20, GRAY);
+        DrawText(TextFormat("DRUNK TIER : %i", drunkTier), 3, 126, 20, GREEN);
+        //+ (drunkTier == SOBER) ? "SOBER" : (drunkTier == TIPSY) ? "TIPSY" : "NAUSEOUS", 3, 84, 20, GREEN);
 
         EndDrawing();
     }
