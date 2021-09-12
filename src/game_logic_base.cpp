@@ -191,7 +191,7 @@ void GameLogicUpdate() {
 
 #pragma region Corrupt Corp Logic
     {
-        //Vector2 corpPosX = static_cast<Vector2>({corpPosX, corpPosZ});
+        Vector2 corpPos = {corpPosX, corpPosZ};
 
         // if (Vector2Length(corp))
         // {
@@ -216,7 +216,7 @@ void GameLogicUpdate() {
         if (CheckColliders(playerCollider, obstacles[i]) && (obstacles[i].type == BIG_WALL_COLLIDER || playerPos.y < 1.0f)) {
             Vector2 pushback = FindPushBack(playerCollider, obstacles[i]);
             playerPos.x -= pushback.x;
-            playerPos.z += pushback.y
+            playerPos.z += pushback.y;
             if (velocity > 5.0f) {
                 velocity /= 2.0f;
                 drunkTier = static_cast<DrunkTier>((drunkTier > SOBER) ? (drunkTier - 1) : drunkTier);
