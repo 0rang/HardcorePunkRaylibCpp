@@ -28,6 +28,8 @@ extern float sidewaysVelocity;
 extern double lastTumbleTime;
 extern double tumbleInterval;
 
+extern double nauseousCountdown;
+
 extern Vector3 playerPos;
 extern float playerRot;
 

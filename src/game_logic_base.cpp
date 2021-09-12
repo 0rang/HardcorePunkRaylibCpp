@@ -35,6 +35,7 @@ constexpr double defaultTumbleInterval = 3.0f;
 constexpr float tumbleSpeed = 5.0f;
 constexpr float tumbleDrag = 4.0f;
 double nauseousStartTime;
+double nauseousCountdown;
 bool nauseousTimerStarted;
 double tumbleInterval = defaultTumbleInterval; // configure based on drunkness and make slight random adjustments each time
 double lastTumbleTime = -10.0;
@@ -180,7 +181,7 @@ void GameLogicUpdate() {
         nauseousTimerStarted = false;
     }
     
-    
+    nauseousCountdown = nauseousStartTime + nauseousTimeLimit - GetTime();
     
 
 #pragma endregion
