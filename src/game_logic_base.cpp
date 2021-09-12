@@ -14,6 +14,7 @@ constexpr float reboundFade = 2.0f;
 static Vector2 collisionRebound = {};
 bool gameLogicLocked = false;
 
+bool gameWin = false;
 
 #pragma region Puddle Params
 constexpr double slideDuration = 1.0;
@@ -87,6 +88,7 @@ void ResetGameState() {
     for (Collectable& collec : collectables) {
         collec.active = true;
     }
+    gameWin = false;
 
     // re-randomize collectables
     collectables.clear();
@@ -196,6 +198,7 @@ void GameLogicUpdate() {
 
         if (Vector2Length(Vector2Subtract(corpPos, { playerPos.x, playerPos.z })) < corpTriggerDist && drunkTier == NAUSEOUS) {
             LockGameLogic();
+            gameWin = true;
         }
 
     }

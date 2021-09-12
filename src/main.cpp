@@ -4,13 +4,13 @@
 #include "models.h"
 #include "collisions.h"
 
-//#define NDEBUG
+#define NDEBUG
 
 constexpr auto SCREEN_WIDTH = 1600;
 constexpr auto SCREEN_HEIGHT = 900;
 
 int main() {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Drunk & Punk");
     SetTargetFPS(60);
     GraphicsInit();
     CollectablesInit();
@@ -33,7 +33,7 @@ int main() {
             BeginDrawing();
             ClearBackground(RAYWHITE);
             Draw3DObjects();
-            DrawText("FIN", SCREEN_WIDTH / 2 - 35, SCREEN_HEIGHT / 2 - 50, 40, GOLD);
+            DrawText(gameWin ? "WIN" : "LOSE", SCREEN_WIDTH / 2 - 35, SCREEN_HEIGHT / 2 - 50, 40, GOLD);
             DrawText("Press space to restart", SCREEN_WIDTH / 2 - 125, SCREEN_HEIGHT / 2 - 10, 20, GOLD);
             EndDrawing();
         }
