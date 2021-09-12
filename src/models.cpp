@@ -4,6 +4,7 @@
 Model floorModel;
 Model playerModel;
 Model smallWallModel;
+Model bigWallModel;
 Model beerModel;
 Shader lshader;
 void ModelsInit() {
@@ -13,7 +14,10 @@ void ModelsInit() {
     beerModel = LoadModel(ASSETS_PATH"BeerBottleText.gltf");
     smallWallModel = LoadModel(ASSETS_PATH"SmallWallText.gltf");
     lshader = LoadShader(ASSETS_PATH"getnormal.vs", ASSETS_PATH"veclighting.fs");
+    bigWallModel = LoadModel(ASSETS_PATH"BigWallText.gltf");
+    bigWallModel.transform = MatrixMultiply(MatrixScale(1.0f, 1.0f, .125f), bigWallModel.transform);
     smallWallModel.materials[0].shader = lshader;
+    bigWallModel.materials[0].shader = lshader;
     playerModel.materials[0].shader = lshader;
     beerModel.materials[0].shader = lshader;
 }

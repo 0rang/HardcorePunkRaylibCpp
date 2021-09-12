@@ -5,6 +5,7 @@
 extern Model floorModel;
 extern Model playerModel;
 extern Model smallWallModel;
+extern Model bigWallModel;
 extern Model beerModel;
 //Init Models
 void ModelsInit();

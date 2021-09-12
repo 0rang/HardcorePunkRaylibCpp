@@ -10,12 +10,29 @@ ObjectCollider playerCollider;
 void ObstaclesInit() {
     ObjectCollider o(smallWallModel);
     playerCollider = ObjectCollider(playerModel);
+    playerCollider.type = PLAYER_COLLIDER;
     playerCollider.bbox.min.x *= 0.19992423057556152f;
     playerCollider.bbox.max.x *= 0.19992423057556152f;
-    o.pos.y = 10.0f;
-    obstacles.push_back(o);
-    o.pos.x = 1.0f;
-    obstacles.push_back(o);
+    o.pos.y = -10.0f;
+    for (int i = 0;i < 4;i++) {
+        obstacles.push_back(o);
+        o.pos.x += 1.0f;
+    }
+    ObjectCollider o2(bigWallModel);
+    o2.pos.y = -10.0f;
+    o2.pos.x = -1.0f;
+    o2.type = BIG_WALL_COLLIDER;
+    o2.bbox.min.z *= .125;
+    o2.bbox.max.z *= .125;
+    for (int i = 0;i < 10;i++) {
+        obstacles.push_back(o2);
+        o2.pos.x -= 1.0f;
+    }
+    o2.pos.x = 4.0f;
+    for (int i = 0;i < 10;i++) {
+        obstacles.push_back(o2);
+        o2.pos.x += 1.0f;
+    }
 }
 ObjectCollider::ObjectCollider(const Model& model) {
     bbox = MeshBoundingBox(model.meshes[0]);
