@@ -34,9 +34,7 @@ int main() {
         // UI TEXT
         DrawText(TextFormat("DRUNKNESS : %s", ((drunkTier == SOBER) ? "SOBER" : ((drunkTier == TIPSY) ? "TIPSY" : "NAUSEOUS"))),
                             3, 126, 20,
-                            (drunkTier == SOBER) ? GREEN : (drunkTier == TIPSY) ? YELLOW : RED); // todo: change colour green/amber/red based on drunkness
-        
-
+                            (drunkTier == SOBER) ? GREEN : (drunkTier == TIPSY) ? YELLOW : RED);        
         
         EndDrawing();
     }

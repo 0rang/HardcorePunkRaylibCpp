@@ -30,16 +30,25 @@ float jumpVelocity = 0.0f;
 #pragma endregion
 
 #pragma region Drunk Movement Params
-constexpr double nauseousTime = 4.0f; // starts when nauseous; about to throw up; need to sober up or get to the goal 
+constexpr double nauseousTimeLimit = 4.0f; // starts when nauseous; about to throw up; need to sober up or get to the goal 
 constexpr double defaultTumbleInterval = 3.0f;
 constexpr float tumbleSpeed = 5.0f;
 constexpr float tumbleDrag = 4.0f;
+double nauseousStartTime;
+bool nauseousTimerStarted;
 double tumbleInterval = defaultTumbleInterval; // configure based on drunkness and make slight random adjustments each time
 double lastTumbleTime = -10.0;
 DrunkTier drunkTier = SOBER;
 float sidewaysVelocity = 0.0f;
-int swayDir; // direction of tumble (1.0 or -1.0)
+float swayDir; // direction of tumble (1.0 or -1.0)
 #pragma endregion 
+
+#pragma region Corrupt Corp Params
+float corpPosX = 5;
+float corpPosY = -5;
+#pragma endregion
+
+
 
 float velocity = .0f; //in m/s
 void HandleInput() {
@@ -132,14 +141,13 @@ void GameLogicUpdate() {
     }
 #pragma endregion
 
-#pragma region Drunk Tumble
-    if (velocity > maxSpeed / 2.0f && drunkTier > SOBER) {
-        if (GetTime() > lastTumbleTime + tumbleInterval)
-        {
+// make player tumble when drunk and start game end timer when nauseated
+#pragma region Drunk Effects
+    if (velocity > maxSpeed / 2.0f && drunkTier > SOBER &&
+    GetTime() > lastTumbleTime + tumbleInterval) {
             swayDir = (rand() % 2) ? 1.0f : -1.0f; // randomly picks left or right tumble
             sidewaysVelocity = tumbleSpeed * swayDir;
             lastTumbleTime = GetTime();
-        }
     }
     
     sidewaysVelocity -= tumbleDrag * swayDir * timeDelta; // dampen tumble velocity
@@ -155,6 +163,34 @@ void GameLogicUpdate() {
     
     playerPos.x += cos((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
     playerPos.z -= sin((playerRot + 90.0f) * DEG2RAD) * sidewaysVelocity * timeDelta;
+
+    // set end timer 
+    if (drunkTier == NAUSEOUS)
+    {
+        if (nauseousTimerStarted)
+        {
+            nauseousStartTime = GetTime();
+            nauseousTimerStarted = true;
+        }
+        
+        if (GetTime() > nauseousStartTime + nauseousTimeLimit)
+        {
+            ResetGameState();
+        }
+        
+    }
+    else
+    {
+        nauseousTimerStarted = false;
+    }
+    
+    
+    
+
+#pragma endregion
+
+#pragma region Corrupt Corp Logic
+
 #pragma endregion
 
     // clamp velocity
