@@ -8,7 +8,7 @@ constexpr unsigned int collectableCount = 30;
 void CollectablesInit() {
     std::srand(std::time(NULL));
     Collectable c;
-    for (int i = 0;i < 30;i++) {
+    for (int i = 0;i < collectableCount;i++) {
         c.location.x = 50.0f - rand() % 1000 / 10.0f;
         c.location.y = 50.0f - rand() % 1000 / 10.0f;
         collectables.push_back(c);

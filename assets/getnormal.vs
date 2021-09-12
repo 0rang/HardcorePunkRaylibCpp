@@ -22,7 +22,7 @@ void main()
     fragTexCoord = vertexTexCoord;
     fragColor = vertexColor;
     
-	fragNormal = vertexNormal;
+	fragNormal = vertexNormal,1.0;
     // Calculate final vertex position
     gl_Position = mvp*vec4(vertexPosition, 1.0);
 }
